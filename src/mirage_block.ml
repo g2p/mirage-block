@@ -42,4 +42,6 @@ module type S = sig
   val read: t -> int64 -> page_aligned_buffer list -> (unit, error) result io
   val write: t -> int64 -> page_aligned_buffer list ->
     (unit, write_error) result io
+  val discard: t -> int64 -> int64 -> 
+    (unit, write_error) result io
 end
