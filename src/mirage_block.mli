@@ -108,4 +108,15 @@ module type S = sig
       Reads following the discard will return zeroes.
       Note the contents may not actually be irrecoverable: this is not a
       "secure erase". *)
+
+  val barrier: t -> durable:bool -> (unit, write_error) result io
+  (** [barrier device] will make sure that all writes done prior to the barrier
+      call will hit [device] before the writes that are done after the barrier
+      io has completed.
+      No guarantee is made for writes made during the barrier io.
+      If ~durable:true is passed, all writes prior to the barrier
+      will be as durable as the device can make them, which may be slower.
+      If ~durable is false or omitted, the implementation may still
+      rely on slower, durable primitives if these are the only ones
+      available. *)
 end
