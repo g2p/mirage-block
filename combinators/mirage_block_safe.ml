@@ -104,6 +104,7 @@ module Make (B: Mirage_block.S) = struct
 
   let unsafe_read = B.read
   let unsafe_write = B.write
+  let unsafe_discard = B.discard
 
   open Lwt.Infix
   open Mirage_block
@@ -124,4 +125,17 @@ module Make (B: Mirage_block.S) = struct
     unsafe_write t offset buffers >|=
     lift_write_error
 
+  let discard t offset len =
+    B.get_info t
+    >>= fun info ->
+    check_in_range "discard" info.size_sectors offset
+    >>*= fun () ->
+    let off1 = Int64.add offset len in
+    if off1 < offset then
+      fatalf "discard: add overflow %Ld %Ld" offset len
+    else
+      check_in_range "discard" info.size_sectors off1
+    >>*= fun () ->
+    unsafe_discard t offset len >|=
+    lift_error
 end

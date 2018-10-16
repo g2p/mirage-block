@@ -41,4 +41,6 @@ module type S = sig
   val read: t -> int64 -> Cstruct.t list -> (unit, error) result Lwt.t
   val write: t -> int64 -> Cstruct.t list ->
     (unit, write_error) result Lwt.t
+  val discard: t -> int64 -> int64 ->
+    (unit, write_error) result Lwt.t
 end
