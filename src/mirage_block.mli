@@ -101,4 +101,10 @@ module type S = sig
       The data will not be copied, so the supplied buffers must not be
       re-used until the IO operation completes. *)
 
+  val discard: t -> int64 -> int64 -> (unit, write_error) result io
+  (** [discard sector n] signals that the [n] sectors starting at [sector]
+      are no longer needed and the contents may be discarded.
+      Reads following the discard will return zeroes.
+      Note the contents may not actually be irrecoverable: this is not a
+      "secure erase". *)
 end
