@@ -99,8 +99,9 @@ module type S = sig
       re-used until the IO operation completes. *)
 
   val discard: t -> int64 -> int64 -> (unit, write_error) result Lwt.t
-  (** [discard sector n] signals that the [n] sectors starting at [sector]
-      are no longer needed and the contents may be discarded.
+  (** [discard device sector n] signals that the [n] sectors starting at
+      [sector] on [device] are no longer needed and the contents may be
+      discarded.
       Reads following the discard will return zeroes.
       Note the contents may not actually be irrecoverable: this is not a
       "secure erase". *)
