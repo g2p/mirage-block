@@ -44,4 +44,5 @@ module type S = sig
     (unit, write_error) result io
   val discard: t -> int64 -> int64 -> 
     (unit, write_error) result io
+  val barrier: ?durable:bool -> t -> (unit, write_error) result io
 end
