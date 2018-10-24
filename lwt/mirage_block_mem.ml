@@ -81,3 +81,12 @@ let rec write x sector_start buffers = match buffers with
       x.map <- Int64Map.add sector_start (Cstruct.sub b 0 512) x.map;
       write x (Int64.succ sector_start) (Cstruct.shift b 512 :: bs)
     end
+
+let rec discard x sector_start sector_count =
+  if sector_count <= 0L then
+    Lwt.return @@ Ok ()
+  else begin
+    x.map <- Int64Map.remove sector_start x.map;
+    discard x (Int64.succ sector_start) @@ Int64.pred sector_count
+  end
+
