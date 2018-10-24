@@ -90,3 +90,8 @@ let rec discard x sector_start sector_count =
     discard x (Int64.succ sector_start) @@ Int64.pred sector_count
   end
 
+(* Nothing to do *)
+let barrier ?durable _x =
+  ignore durable;
+  Lwt.return @@ Ok ()
+
