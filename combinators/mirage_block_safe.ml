@@ -138,4 +138,7 @@ module Make (B: Mirage_block.S) = struct
     >>*= fun () ->
     unsafe_discard t offset len >|=
     lift_error
+
+  let barrier ?durable t =
+    B.barrier ?durable t >|= lift_error
 end

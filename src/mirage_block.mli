@@ -106,7 +106,7 @@ module type S = sig
       Note the contents may not actually be irrecoverable: this is not a
       "secure erase". *)
 
-  val barrier: ?durable:bool -> t -> (unit, write_error) result io
+  val barrier: ?durable:bool -> t -> (unit, write_error) result Lwt.t
   (** [barrier device] will make sure that all writes done prior to the barrier
       call will hit [device] before the writes that are done after the barrier
       io has completed.
